@@ -9,7 +9,6 @@ openai.api_key = api_key
 model = "text-davinci-003"
 
 
-
 def generate_text(prompt):
     response = openai.Completion.create(
         engine="gpt-3.5-turbo-0301",
