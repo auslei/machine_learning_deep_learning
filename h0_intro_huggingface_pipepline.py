@@ -19,25 +19,24 @@ If you do go down the path of purchasing from Amazon store, I encourage you to v
 outputs = classifier(text)
 pd.DataFrame(outputs)
 # %% Named Entity Recognition
-ner_tagger = pipeline("ner", aggregation_strategy = "simple")
+ner_tagger = pipeline("ner", aggregation_strategy = "simple", model="dbmdz/bert-large-cased-finetuned-conll03-english")
 outputs = ner_tagger(text)
 pd.DataFrame(outputs)
 # %% Q&A
-reader = pipeline("question-answering")
+reader = pipeline("question-answering", model="distilbert-base-cased-distilled-squad")
 question = "What does the customer want?"
 outputs = reader(question = question, context = text)
 pd.DataFrame([outputs])
 # %% Summarisation
-summariser = pipeline("summarization")
+summariser = pipeline("summarization", model = "sshleifer/distilbart-cnn-12-6")
 outputs = summariser(text, max_length = 60, clean_up_tokenization_spaces = True)
 print(outputs[0]['summary_text'])
 
 # %% Translation
-from transformers import AutoModelWithLMHead,AutoTokenizer,pipeline
+from transformers import AutoModelWithLMHead, AutoTokenizer,pipeline
 
 mode_name = 'liam168/trans-opus-mt-en-zh'
 model = AutoModelWithLMHead.from_pretrained(mode_name)
-
 tokenizer = AutoTokenizer.from_pretrained(mode_name)
 
 translation = pipeline("translation_en_to_zh", model=model, tokenizer=tokenizer)
@@ -47,7 +46,7 @@ translation(text)
 generator = pipeline("text-generation", model = "gpt2")
 response = "Dear customer, sorry to hear about your issue."
 prompt = text + "\n\nCustomer Service Response:\n" + response
-outputs= generator(prompt, max_length = 200)
+outputs= generator(prompt, max_length = 2000)
 print(outputs[0]['generated_text'])
 
-# %%
+   # %%
